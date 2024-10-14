@@ -20,7 +20,9 @@ func main() {
 }
 
 func handleConn(conn net.Conn) {
+
 	for {
+
 		buf := make([]byte, 1024)
 		_, err := conn.Read(buf)
 		if err != nil {
