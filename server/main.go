@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net"
+	"strings"
 )
 
 func main() {
@@ -28,7 +29,11 @@ func handleConn(conn net.Conn) {
 			fmt.Println(err)
 			return
 		}
-		clienteAddr := conn.RemoteAddr().String()
-		fmt.Printf("Cliente > %s: %s\n", clienteAddr, string(buf))
+
+		requestLines := strings.Split(string(buf), "\n")
+		method := strings.Split(requestLines[0], " ")[0]
+		path := strings.Split(requestLines[0], " ")[1]
+		fmt.Println(method, path)
+
 	}
 }
