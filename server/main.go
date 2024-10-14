@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"net"
+	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -32,8 +34,27 @@ func handleConn(conn net.Conn) {
 
 		requestLines := strings.Split(string(buf), "\n")
 		method := strings.Split(requestLines[0], " ")[0]
-		path := strings.Split(requestLines[0], " ")[1]
-		fmt.Println(method, path)
+		requestPath := strings.Split(requestLines[0], " ")[1]
+		fmt.Println(method, requestPath)
 
+		pathFile := validateMethod(method, requestPath)
+		fmt.Println(pathFile)
 	}
+}
+
+func validateMethod(method string, path string) string {
+	if method == "GET" {
+		fmt.Printf("metodo: %s suportado\n", method)
+		rootDir, err := os.Getwd()
+		if err != nil {
+			fmt.Println(err)
+		}
+		staticFilePath := filepath.Join(rootDir, path)
+		return staticFilePath
+	}
+	return ""
+}
+
+func returnStaticContent(path string) {
+
 }
